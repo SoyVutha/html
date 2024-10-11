@@ -8,11 +8,10 @@ const App = () => {
   const [darktheme,setDarktheme]=useState(false);
   return (
     <div  className={darktheme?'dark':''}>
-      <div className='bg-gray-100 dark:bg-black dark:text-gray-200 min-h-screen'>
-
+      <div className='bg-white dark:bg-black dark:text-white min-h-screen'>
       <Navbar darktheme={darktheme} setDarktheme={setDarktheme}/>
-      <Footer/>
       <Routes/>
+      <Footer/>
       </div>
     </div>
   )

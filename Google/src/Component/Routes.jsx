@@ -1,15 +1,16 @@
-import { Routes, Route, Navigate } from 'react-router-dom'; // Use Navigate for redirecting
+import { Routes, Route, Navigate } from 'react-router-dom'; 
 import { Result } from './Result';
+import Search from './Search'
 
 const AppRoutes = () => {
   return (
     <div className='p-4'>
       <Routes>
-        <Route path='/' element={<Navigate to="/search" replace />} /> {/* Redirect to /search */}
-        <Route path="/search" element={<Result />} /> {/* Separate route for /search */}
-        <Route path="/images" element={<Result />} /> {/* Separate route for /images */}
-        <Route path="/news" element={<Result />} /> {/* Separate route for /news */}
-        <Route path="/video" element={<Result />} /> {/* Separate route for /video */}
+        <Route path='/' element={<Navigate to="/search" replace />} /> 
+        <Route path="/search" element={<Result />} /> 
+        <Route path="/images" element={<Result />} /> 
+        <Route path="/news" element={<Result />} />  
+        <Route path="/video" element={<Result />} /> 
       </Routes>
     </div>
   );
