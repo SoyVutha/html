@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Navbar from './Component/Navbar'
 import Footer from './Component/Footer'
 import Routes from './Component/Routes'
+import { ResultContextProvider } from './Context/ResultContextProvider'
 
 const App = () => {
   const [darktheme,setDarktheme]=useState(false);
