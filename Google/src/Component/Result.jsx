@@ -1,7 +1,7 @@
 import { ResultContextProvider } from "../Context/ResultContextProvider";
 import { useEffect } from "react";
 import { useLocation } from 'react-router-dom';
-import { ReactPlayer } from 'react-player'; // Ensure you are using this correctly
+import { ReactPlayer } from 'react-player'; 
 import { useResultContext } from '../Context/ResultContextProvider';
 import Loading from '../Component/Loading';
 
