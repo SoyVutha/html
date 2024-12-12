@@ -1,6 +1,6 @@
 const math=require("./Math");
 const path=require("path");
-const fs = require("fs");
+const fs = require("fs"); //fs=file system module
 const { error } = require("console");
 
 try{ //synchronous = code waited to be done 
