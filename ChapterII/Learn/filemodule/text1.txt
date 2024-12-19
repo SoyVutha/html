@@ -1,0 +1,2 @@
+This is the new text to the Duck file
+This is the append text

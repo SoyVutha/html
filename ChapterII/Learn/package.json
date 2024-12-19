@@ -4,7 +4,7 @@
   "description": "learn-node.js",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --env-file=.env server.js"
+    "start": "nodemon --env-file=.env server2.js"
   },
   "author": "vutha",
   "license": "MIT",

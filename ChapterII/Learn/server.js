@@ -1,3 +1,10 @@
+//1.server
+//2.createserver
+//3.listen
+//4.request
+//5.response
+//6.handle server
+
 import http, { get } from 'http';
 const PORT =process.env.PORT; // the port value doenst matter , it's only local host
 import fs from 'fs/promises';
