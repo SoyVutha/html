@@ -8,7 +8,7 @@
 import http from 'http';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-const __dirname=dirname(fileURLToPath(impor t.meta.url));
+const __dirname=dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT||8000;
 
 const users=[{
