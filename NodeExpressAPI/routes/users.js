@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 const users=[
   {
     "id": 1,
@@ -83,9 +83,39 @@ const users=[
 
 ];
 
-
 export const router = express.Router();
+router.use(express.json());
 
+//GET 
 router.get('/',(req,res)=>{
   res.json(users);
+})
+
+
+//POST
+
+router.post('/',(req,res)=>{
+ let body='';
+ req.on('data',chunk=>{
+  body+=chunk;
+ })
+ req.on('end',()=>{
+  try{
+    let newUSer=JSON.parse(body);
+    const newUSerID=newUSer.id;
+    const alreadyexist=users.some((user)=>user.id===newUSer.id ||user.name===newUSer.name);
+    if(alreadyexist){
+      res.status(400).json({message:'User already exists'});
+    }
+    else{
+      users.push(newUSer);
+      res.send(JSON.stringify(users));
+      res.end();
+
+    }
+  }
+  catch(error){
+    res.status(400).json({error});
+  }
+ })
 })
