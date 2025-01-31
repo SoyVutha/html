@@ -1,7 +1,7 @@
 import HeaderBox from "@/components/ui/HeaderBox"
 import TotalBalanceBox from "@/components/ui/TotalBalanceBox"
 import RightSidebar from "@/components/ui/RightSidebar"
- from "@/components/ui/BankCard"
+
 const page = () => {
   const LoggedIn={firstName:" Duck",lastName:"Quack",email:"V010utha@gmail.com"}
   return (
@@ -14,7 +14,7 @@ const page = () => {
 
         Recent transaction
         </div>
-      <RightSidebar user={LoggedIn} transactions={[]} banks={[{},{}]} />
+      <RightSidebar user={LoggedIn} transactions={[]} banks={[{currentBalance: 120.35},{currentBalance: 45.79}]} />
     </section>
   )
 }

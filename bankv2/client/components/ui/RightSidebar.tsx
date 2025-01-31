@@ -2,7 +2,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import plus from '../../public/icons/plus.svg';
-import BankCard from './BankCard';
+import BankCard from "./BankCard";
+
 const RightSidebar = ({banks,user, transactions}:RightSidebarProps) => {
 const firstAlphabet = user.firstName.match(/[A-Za-z]/);
   return (
@@ -13,7 +14,7 @@ const firstAlphabet = user.firstName.match(/[A-Za-z]/);
                 <div className="profile-img">
                     <span className="text-5xl font-bold text-blue-500">{firstAlphabet}</span>
                 </div>
-                <div className="profile-details flex flex-col bg-red-200 ">
+                <div className="profile-details flex flex-col ">
                     <h1 className="profile-name text-4xl">{user.firstName} {user.lastName}</h1>
                     <p className="profile-email">{user.email}</p>
                 </div>
@@ -33,14 +34,14 @@ const firstAlphabet = user.firstName.match(/[A-Za-z]/);
                         <BankCard
                         key={banks[0].id}
                         account={banks[0]}
-                        username={`${user.firstName} ${user.lastName}`}
+                        userName={`${user.firstName} ${user.lastName}`}
                         showBalance={false}  
                         />
                     </div>
                     {banks[1] && (
                         <div className="absolute right-0 top-8 z-0 w-[90%]"><BankCard   
-                        key={banks[0].id}
-                        account={banks[0]}
+                        key={banks[1].id}
+                        account={banks[1]}
                         username={`${user.firstName} ${user.lastName}`}
                         showBalance={false}  /></div>
                     )}
