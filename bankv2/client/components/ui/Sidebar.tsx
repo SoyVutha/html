@@ -17,9 +17,9 @@ const Sidebar = ({user}:SiderbarProps) => {
             <h1 className="sidebar-logo">Horizon</h1></Link>
             
             {sidebarLinks.map((item)=>{
-                const isActive=path===item.route|| path.includes(item.route)||path.startsWith(item.route);
+                const isActive = path === item.route || (path.startsWith(item.route) && item.route !== "/");
                 return(
-                    <Link href={item.route} key={item.label} className={`flex items-center gap-2 ${cn('sidebar-link', {'bg-bank-gradient': isActive})}`}>
+                    <Link href={item.route} key={item.label} className={cn("flex items-center gap-2 sidebar-link", { "bg-bank-gradient": isActive })}>
                         <Image src={item.imgURL} alt="pic" width={24} height={24}  className={cn({"brightness-75 invert-0": isActive})}></Image>
                         <p className={cn("sidebar-label", { "!text-white": isActive })}>{item.label}</p>
                         </Link>
