@@ -1,7 +1,6 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,7 +17,7 @@ interface CustomFormProps {
     type: string
 
 }
-const CustomForm = ({form,name,label}:CustomFormProps) => {
+const CustomForm = ({form,name,label,type}:CustomFormProps) => {
   return (
 <FormField
           control={form.control}
@@ -32,7 +31,7 @@ const CustomForm = ({form,name,label}:CustomFormProps) => {
                 <FormControl>
                 <Input
                   {...field}
-                  type={label}
+                  type={type}
                   placeholder={`Enter Your ${label}`}
                   className="input-class"
                     value={field.value ?? ""} 
@@ -40,7 +39,6 @@ const CustomForm = ({form,name,label}:CustomFormProps) => {
                 </FormControl>
                 <FormMessage className="form-message mt-2" />
              </div>
-            
             </div>
           )}
         />

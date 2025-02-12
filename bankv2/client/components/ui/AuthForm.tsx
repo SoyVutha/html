@@ -3,10 +3,11 @@ import Link from "next/link"
 import Image from "next/image"
 import logo from '../../public/icons/logo.svg'
 import { useState } from "react"
-import { z } from "zod"
+import { z, ZodType } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
+import CustomSignUp from '../ui/CustomSignUp';
 import {
   Form,
   FormControl,
@@ -18,28 +19,48 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import CustomForm from "./CustomForm";
+import { Loader2 } from "lucide-react";
 
-
-const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email address"})
-})
+const formSchema =(type:string)=> z.object({
+  //signup
+  firstname:type==='Sign-in'? z.string().optional():z.string().min(2, { message: "First Name must be at least 2 characters" }),
+  lastname:type==='Sign-in'? z.string().optional():z.string().min(2, { message: "Last Name must be at least 2 characters" }),
+  address:type==='Sign-in'? z.string().optional():z.string().min(5, { message: "Address must be at least 5 characters" }),
+  state:type==='Sign-in'? z.string().optional():z.string().min(2, { message: "State must be at least 2 characters" }),
+  postal_code:type==='Sign-in'? z.string().optional():z.string().min(4, { message: "Postal Code must be at least 4 characters" }),
+  birthday: type==='Sign-in'? z.string().optional():z.string().regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Invalid date format (YYYY-MM-DD)" }),
+  ssn:type==='Sign-in'? z.string().optional():z.string().min(4, { message: "SSN must be at least 4 characters" }),
+  //both
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
+});
 
 
 const AuthForm = ({type}:{type:string}) => {
     const [user, setUser] = useState(null);
+    const [isloading,setisloading]=useState(false);
+
+
       // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-    },
-  })
+  const schema = formSchema(type);
+  const form = useForm<z.infer<typeof schema>>({
+  resolver: zodResolver(schema),
+  defaultValues: {
+    email: "",
+    password: ""
+  },
+});
+    
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<ReturnType<typeof formSchema>>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    setisloading(true);
+    console.log(values);
+    setTimeout(()=>{
+      setisloading(false);
+    },1000)
   }
   return (
     <section className="auth-form">
@@ -60,8 +81,152 @@ const AuthForm = ({type}:{type:string}) => {
         )
         :(
             <div>
-                   <Form {...form}>
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {type==='sign_up'  && (
+
+           <>
+  <div className="flex flex-row w-full space-x-4">
+    <FormField
+      control={form.control}
+      name="firstname"
+      render={({ field }) => (
+        <div className="form-item flex-1">
+          <FormLabel className="form-label">First Name</FormLabel>
+          <FormControl>
+            <Input
+              {...field}
+              type="text"
+              placeholder="Enter Your First Name"
+              className="input-class"
+            />
+          </FormControl>
+          <FormMessage className="form-message mt-2" />
+        </div>
+      )}
+    />
+
+    <FormField
+      control={form.control}
+      name="lastname"
+      render={({ field }) => (
+        <div className="form-item flex-1">
+          <FormLabel className="form-label">Last Name</FormLabel>
+          <FormControl>
+            <Input
+              {...field}
+              type="text" // Change type to "text" instead of "email"
+              placeholder="Enter Your Last Name"
+              className="input-class"
+            />
+          </FormControl>
+          <FormMessage className="form-message mt-2" />
+        </div>
+      )}
+    />
+  </div>
+
+  <FormField
+    control={form.control}
+    name="address"
+    render={({ field }) => (
+      <div className="form-item w-full mt-4">
+        <FormLabel className="form-label">Address</FormLabel>
+        <FormControl>
+          <Input
+            {...field}
+            type="text"
+            placeholder="Enter Your Address"
+            className="input-class"
+          />
+        </FormControl>
+        <FormMessage className="form-message mt-2" />
+      </div>
+    )}
+  />
+
+  <div className="flex flex-row w-full space-x-4 mt-4">
+    <FormField
+      control={form.control}
+      name="state"
+      render={({ field }) => (
+        <div className="form-item flex-1">
+          <FormLabel className="form-label">State</FormLabel>
+          <FormControl>
+            <Input
+              {...field}
+              type="text"
+              placeholder="ex: NY"
+              className="input-class"
+            />
+          </FormControl>
+          <FormMessage className="form-message mt-2" />
+        </div>
+      )}
+    />
+
+    <FormField
+      control={form.control}
+      name="postal_code"
+      render={({ field }) => (
+        <div className="form-item flex-1">
+          <FormLabel className="form-label">Postal Code</FormLabel>
+          <FormControl>
+            <Input
+              {...field}
+              type="text"
+              placeholder="ex: 11101"
+              className="input-class"
+            />
+          </FormControl>
+          <FormMessage className="form-message mt-2" />
+        </div>
+      )}
+    />
+  </div>
+
+  <div className="flex flex-row w-full space-x-4 mt-4">
+    <FormField
+      control={form.control}
+      name="birthday"
+      render={({ field }) => (
+        <div className="form-item flex-1">
+          <FormLabel className="form-label">Birthday</FormLabel>
+          <FormControl>
+            <Input
+              {...field}
+              type="date" // Change type to "date" for better input handling
+              placeholder="yyyy-mm-dd"
+              className="input-class"
+            />
+          </FormControl>
+          <FormMessage className="form-message mt-2" />
+        </div>
+      )}
+    />
+
+    <FormField
+      control={form.control}
+      name="ssn"
+      render={({ field }) => (
+        <div className="form-item flex-1">
+          <FormLabel className="form-label">SSN</FormLabel>
+          <FormControl>
+            <Input
+              {...field}
+              type="text" // Change type to "text" for SSN
+              placeholder="ex: 1234"
+              className="input-class"
+            />
+          </FormControl>
+          <FormMessage className="form-message mt-2" />
+        </div>
+      )}
+    />
+  </div>
+</>
+
+          )}
         <FormField
           control={form.control}
           name="email"
@@ -84,11 +249,26 @@ const AuthForm = ({type}:{type:string}) => {
             </div>
           )}
         />
-        <CustomForm form={form} name="password" label="password" />
-
-        <Button type="submit">Submit</Button>
+        <CustomForm form={form} name="password" label="password" type="password" />
+          <div className="flex flex-col gap-4">
+        <Button disabled={isloading} type="submit" className="form-btn">{isloading?(
+          <div className="flex flex-row items-center gap-3">
+            <Loader2 size={20} className="animate-spin"/>
+            Loading...
+          </div>
+        ):type==='Sign-in'
+        ?'Sign in':'Sign out'}</Button>
+          </div>
       </form>
-    </Form>               
+    </Form>    
+    <footer className="flex justify-center gap-1 ">
+      <p className="text-14 font-bold text-gray-600">
+        {type==='Sign-in'
+        ?'Dont Have an account '
+        : 'Already have an account'}
+      </p>
+      <Link className="form-link" href={type==='Sign-in'?'/Sign-up':'/Sign-in'}>{type==='Sign-in' ? 'Sign up': 'Sign in'}</Link>
+    </footer>           
             </div>
         )}
     </section>
