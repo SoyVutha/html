@@ -20,6 +20,9 @@ import {
 import { Input } from "@/components/ui/input"
 import CustomForm from "./CustomForm";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { signIn,signUp } from "@/lib/actions/user.actions";
+
 
 const formSchema =(type:string)=> z.object({
   //signup
@@ -51,16 +54,30 @@ const AuthForm = ({type}:{type:string}) => {
   },
 });
     
- 
+ const router=useRouter();
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<ReturnType<typeof formSchema>>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const onSubmit=async (values: z.infer<ReturnType<typeof formSchema>>) =>{
     setisloading(true);
-    console.log(values);
-    setTimeout(()=>{
+    try{
+        if(type==='Sign-in'){
+          const response= await signIn({
+            email:values.email,
+            password:values.password,
+          })
+        }
+        if(type==='sign_up'){
+          const newUser= await signUp(values);    
+          setUser(newUser);
+          // sent everything from the form input by user , to do something with it
+        }
+    }
+    catch(error){
+      console.error(error);
+    }
+    finally{
       setisloading(false);
-    },1000)
+    }
+
   }
   return (
     <section className="auth-form">
@@ -195,7 +212,7 @@ const AuthForm = ({type}:{type:string}) => {
           <FormControl>
             <Input
               {...field}
-              type="date" // Change type to "date" for better input handling
+              type="date" 
               placeholder="yyyy-mm-dd"
               className="input-class"
             />
@@ -257,7 +274,7 @@ const AuthForm = ({type}:{type:string}) => {
             Loading...
           </div>
         ):type==='Sign-in'
-        ?'Sign in':'Sign out'}</Button>
+        ?'Sign in':'Sign up'}</Button>
           </div>
       </form>
     </Form>    
