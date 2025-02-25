@@ -22,12 +22,13 @@ import CustomForm from "./CustomForm";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn,signUp } from "@/lib/actions/user.actions";
+import { Neucha } from "next/font/google";
 
 
 const formSchema =(type:string)=> z.object({
   //signup
-  firstname:type==='Sign-in'? z.string().optional():z.string().min(2, { message: "First Name must be at least 2 characters" }),
-  lastname:type==='Sign-in'? z.string().optional():z.string().min(2, { message: "Last Name must be at least 2 characters" }),
+  firstName:type==='Sign-in'? z.string().optional():z.string().min(2, { message: "First Name must be at least 2 characters" }),
+  lastName:type==='Sign-in'? z.string().optional():z.string().min(2, { message: "Last Name must be at least 2 characters" }),
   address:type==='Sign-in'? z.string().optional():z.string().min(5, { message: "Address must be at least 5 characters" }),
   state:type==='Sign-in'? z.string().optional():z.string().min(2, { message: "State must be at least 2 characters" }),
   postal_code:type==='Sign-in'? z.string().optional():z.string().min(4, { message: "Postal Code must be at least 4 characters" }),
@@ -48,11 +49,22 @@ const AuthForm = ({type}:{type:string}) => {
   const schema = formSchema(type);
   const form = useForm<z.infer<typeof schema>>({
   resolver: zodResolver(schema),
-  defaultValues: {
+  defaultValues: type === 'sign_up' ? {
+    firstName: "",
+    lastName: "",
+    address: "",
+    state: "",
+    postal_code: "",
+    birthday: "",
+    ssn: "",
     email: "",
-    password: ""
+    password: "",
+  } : {
+    email: "",
+    password: "",
   },
 });
+
     
  const router=useRouter();
   // 2. Define a submit handler.
@@ -60,14 +72,18 @@ const AuthForm = ({type}:{type:string}) => {
     setisloading(true);
     try{
         if(type==='Sign-in'){
+          
           const response= await signIn({
             email:values.email,
             password:values.password,
           })
+          console.log(response);
+          if(response) router.push('/');
         }
         if(type==='sign_up'){
           const newUser= await signUp(values);    
           setUser(newUser);
+          console.log("Account : ", newUser);
           // sent everything from the form input by user , to do something with it
         }
     }
@@ -106,7 +122,7 @@ const AuthForm = ({type}:{type:string}) => {
   <div className="flex flex-row w-full space-x-4">
     <FormField
       control={form.control}
-      name="firstname"
+      name="firstName"
       render={({ field }) => (
         <div className="form-item flex-1">
           <FormLabel className="form-label">First Name</FormLabel>
@@ -125,7 +141,7 @@ const AuthForm = ({type}:{type:string}) => {
 
     <FormField
       control={form.control}
-      name="lastname"
+      name="lastName"
       render={({ field }) => (
         <div className="form-item flex-1">
           <FormLabel className="form-label">Last Name</FormLabel>
