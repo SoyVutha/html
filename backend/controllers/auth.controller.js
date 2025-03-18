@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { JWT_EXPIRE_IN,JWT_SECRET } from "../config/env.js";
 
-export const signUp=async(res,req,next)=>{
+export const signUp=async(req,res,next)=>{
     //With startSession, both steps will happen together, or nothing happens if something goes wrong.
     const session=await mongoose.startSession();
     session.startTransaction();
@@ -21,19 +21,18 @@ export const signUp=async(res,req,next)=>{
         const salt=await bcrypt.genSalt(10);//A salt is a random value added to a password before hashing to make it more secure
         const hashPassword=await bcrypt.hash(password,salt);
 
-        const newUser=await User.create([{name,email,password:hashPassword},{session},JWT_SECRET,{expireIn:JWT_EXPIRE_IN}]);
+        const newUser = await User.create([{ name, email, password: hashPassword }], { session });
 
-
-        const token=jwt.sign({userId:newUser[0]._id},);
+        const token = jwt.sign({ userId: newUser[0]._id }, JWT_SECRET, { expiresIn: JWT_EXPIRE_IN });
         //commitTransaction saves (confirms) all changes made inside a transaction. Once committed, the changes cannot be undone.
         await session.commitTransaction();
         session.endSession();
-        res.statusCode(201).json({
+        res.status(201).json({
             success:true,
             message:"User create Successfully",
             data:{
                 token,
-                user:newUser[0],
+                User:newUser[0],
             }    
         })
     }catch(error){
