@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const subscriptionSchema = new mongoose.Schema({
-    name:{type:string,required:[true,"Subscription Name is required"],trim:true,minlength:3,maxlength:50},
+    name:{type:String,required:[true,"Subscription Name is required"],trim:true,minlength:3,maxlength:50},
     price:{type:Number,required:[true,"Subscription Price is required"],min:[0,"Price must be greater than 0"]},
     currency:{type:String,enum:["USD","EUR","GBP"],default:"USD",},
     frequency:{type:String,enum:["daily","weekly","monthly","yearly"],default:"monthly"},

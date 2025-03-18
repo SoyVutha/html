@@ -12,6 +12,7 @@ const app = express();
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/subscription', subscriptionRouter);
+
 app.use(errorMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
