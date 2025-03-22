@@ -1,8 +1,12 @@
 import { Router } from "express";
 const userRouter = Router();
+import { getUsers,getUser } from "../controllers/user.controller.js";
+import { authorize } from "../middleware/auth.middleware.js";
+
 // Get User Info
-userRouter.get('/', (req, res) => { res.send({ title: 'Fetch all user Route' }); });
-userRouter.get('/:id', (req, res) => { res.send({ title: 'Fetch all specific user Route' }); });
+// Path: /users
+userRouter.get('/', getUsers);
+userRouter.get('/:id',authorize, getUser);
 
 // Create
 userRouter.post('/', (req, res) => { res.send({ title: 'Create new user Route' }); });

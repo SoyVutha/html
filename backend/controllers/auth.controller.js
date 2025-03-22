@@ -16,7 +16,6 @@ export const signUp=async(req,res,next)=>{
             error.statusCode=409;
             throw error;
         }
-
         //hash password : secure the password
         const salt=await bcrypt.genSalt(10);//A salt is a random value added to a password before hashing to make it more secure
         const hashPassword=await bcrypt.hash(password,salt);
@@ -44,7 +43,34 @@ export const signUp=async(req,res,next)=>{
     }
 }
 
-export const signIn=async(res,req,next)=>{
+export const signIn=async(req,res,next)=>{
+    try{
+        const {email, password} =req.body;
+        const user = await User.findOne({email});
+        if(!user) {
+            const error=new Error('User not found ');
+            error.statusCode=404;
+            throw error;
+        }
+        const isPasswordValid= await bcrypt.compare(password,user.password);
+        if(!isPasswordValid){
+            const error=new Error('Invalid password');
+            error.statusCode=401;
+            throw error;
+        }
+        const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRE_IN})
+        res.status(200).json({
+            success:true,
+            message:"User login Successfully",
+            data:{
+                token,
+                User:user
+                }
+        })
+    }
+    catch(error){
+        next(error);
+    }
 }
 
 export const signOut=async(res,req,next)=>{
