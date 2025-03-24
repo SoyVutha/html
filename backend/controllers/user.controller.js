@@ -18,7 +18,6 @@ export const getUser= async(req,res,next)=>{
             res.status(404)
             throw error;
         }
-
             res.status(200).json({message:true,data:user });
     }
     catch(error){

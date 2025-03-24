@@ -7,6 +7,7 @@ import connectDB from './Database/mongodb.js';
 import subscript from './Models/subscription.model.js';
 import errorMiddleware from './middleware/error.middleware.js';
 import cookieParser from 'cookie-parser';
+import { arcjectmiddleware } from './Models/arcjet.middleware.js';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/subscription', subscriptionRouter);
 
 app.use(errorMiddleware);
+app.use(arcjectmiddleware);
 
 app.get('/', (req, res) => {
     res.send('Hello World from the server');

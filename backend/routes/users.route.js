@@ -2,10 +2,11 @@ import { Router } from "express";
 const userRouter = Router();
 import { getUsers,getUser } from "../controllers/user.controller.js";
 import { authorize } from "../middleware/auth.middleware.js";
+import { arcjectmiddleware } from "../Models/arcjet.middleware.js";
 
 // Get User Info
 // Path: /users
-userRouter.get('/', getUsers);
+userRouter.get('/',arcjectmiddleware, getUsers);
 userRouter.get('/:id',authorize, getUser);
 
 // Create

@@ -5,5 +5,6 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: [true, "User Password is required"],minlength: 6},
  
 },{timestamps: true}); //The timestamps option automatically adds two fields to your data:createdAt updatedAt
+
 const User = mongoose.model("User", userSchema);
 export default User;
