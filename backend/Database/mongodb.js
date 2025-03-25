@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { DB_url,NODE_ENV } from "../config/env.js";
+
+
 if(!DB_url){
     throw new Error('DB_url is not provided,please define DB_url in development/production.local file');   
 }

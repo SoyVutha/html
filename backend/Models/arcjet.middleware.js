@@ -5,10 +5,10 @@ export const arcjectmiddleware=async(req,res,next)=>{
         
         if(dicision.isDenied){
             if(dicision.reason.isRateLimit()){
-                res.status(429).send(dicision.reason.message);
+                return res.status(429).send(dicision.reason.message);
             }
             if(dicision.reason.isBot()) {
-                res.status(403).send(dicision.reason.message);
+                return res.status(403).send(dicision.reason.message);
             }
             return res.status(403).json({érror:'access denied'});
         }

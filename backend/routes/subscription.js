@@ -1,4 +1,8 @@
 import { Router } from "express";
+import { authorize } from "../middleware/auth.middleware.js";
+import createSubscription from "../controllers/subscription.controller.js";
+import { getUserSubscriptions } from "../controllers/subscription.controller.js";
+
 const subscriptionRouter = Router();    
 
 // Subscribe
@@ -6,13 +10,13 @@ subscriptionRouter.get('/', (req, res) => { res.send({ title: 'Subscribe Route' 
 
 subscriptionRouter.get('/:id', (req, res) => { res.send({ title: 'Subscribe ID Route' }); });
 
-subscriptionRouter.post('/', (req, res) => { res.send({ title: 'Create Subscribe Route' }); });
+subscriptionRouter.post('/',authorize, createSubscription);
 
 subscriptionRouter.put('/:id', (req, res) => { res.send({ title: 'Update Subscribe Route' }); });
 
 subscriptionRouter.delete('/:id', (req, res) => { res.send({ title: 'Delete Subscribe Route' }); });
 
-subscriptionRouter.get('/user/:id', (req, res) => { res.send({ title: 'Get all user Subscribe ID Route' }); });
+subscriptionRouter.get('/user/:id', authorize,getUserSubscriptions);
 
 subscriptionRouter.put('/:id/cancel', (req, res) => { res.send({ title: 'Cancel Subscribe' }); });
 
